@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Avimias - Ana Sayfa</title>
+    <style>
+        /* Ana Stiller */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f7fa;
+            opacity: 1;
+    transition: opacity 0.5s ease-out;
+        }
+        .register-container {
+        transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .loading {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .loading.show {
+            opacity: 1;
+        }
+
+        .success-message {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Header Stili */
+        .header {
+            background-color: #ff0000;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-buttons a {
+            padding: 10px 20px;
+            background-color: white;
+            color: #ff0000;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Hero Bölümü Stili */
+        .hero-section {
+            margin-top: 80px;
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #ff0000 0%, #ff6b6b 100%);
+            color: white;
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        /* Özellikler Bölümü Stili */
+        .features-section {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #333;
+            font-size: 2.5em;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ff0000, #ff6b6b);
+            border-radius: 50%;
+            color: white;
+            font-size: 2em;
+        }
+
+        .feature-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .feature-description {
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Footer Stili */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer h3 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2em;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body style="opacity: 1; transition: opacity 0.5s ease-out;">
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Avimias</div>
+            <div class="nav-buttons">
+                <a href="login.html">Giriş Yap</a>
+                <a href="register.html">Kayıt Ol</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Bölümü -->
+    <section class="hero-section">
+        <h1>Türkiye'nin En Gelişmiş AI Asistanı</h1>
+        <p>Yapay zeka teknolojisiyle size özel çözümler sunuyoruz</p>
+    </section>
+
+    <!-- Özellikler Bölümü -->
+    <section class="features-section">
+        <div class="features-container">
+            <h2 class="section-title">Avimias'ın Özellikleri</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3 class="feature-title">Sesli Asistan</h3>
+                    <p class="feature-description">
+                        Sesli komutlarla iletişim kurabilir, sorularınızı sesli olarak yanıtlayabilirim. 
+                        Türkçe dil desteği ile doğal bir konuşma deneyimi sunar.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Metin Analizi</h3>
+                    <p class="feature-description">
+                        Uzun metinleri özetler, anahtar kelimeleri çıkarır ve duygu analizi yapar. 
+                        Akademik ve profesyonel metinlerde size yardımcı olur.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3 class="feature-title">Kod Asistanı</h3>
+                    <p class="feature-description">
+                        Programlama dillerinde kod yazmanıza yardımcı olur, hata ayıklama yapar 
+                        ve en iyi pratikleri önerir.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3 class="feature-title">Çeviri Desteği</h3>
+                    <p class="feature-description">
+                        Birçok dil arasında anlık çeviri yapabilir, metinleri doğal ve akıcı 
+                        bir şekilde tercüme eder.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔢</div>
+                    <h3 class="feature-title">Matematik Çözücü</h3>
+                    <p class="feature-description">
+                        Karmaşık matematik problemlerini adım adım çözer, formülleri açıklar 
+                        ve grafikleri analiz eder.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3 class="feature-title">Yaratıcı Yazım</h3>
+                    <p class="feature-description">
+                        Hikayeler, şiirler ve yaratıcı metinler oluşturur. İçerik üretiminde 
+                        size ilham kaynağı olur.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>Hakkımızda</h3>
+                <p>Avimias, yapay zeka teknolojilerini Türkçe dil desteğiyle sunan öncü bir platformdur.</p>
+            </div>
+            <div>
+                <h3>İletişim</h3>
+                <p>Email: avimias@gmail.com</p>
+                <p>Tel: +90 123 456 7890</p>
+            </div>
+            <div>
+                <h3>Adres</h3>
+                <p>Teknoloji Vadisi</p>
+                <p>İstanbul, Türkiye</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
