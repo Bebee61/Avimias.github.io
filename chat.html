@@ -8,6 +8,8 @@
             --primary-color: #ff0000;
             --bg-color: #f0f2f5;
             --text-color: #333;
+            --dark-bg-color: #333;
+            --dark-text-color: #f0f2f5;
         }
 
         @keyframes slideIn {
@@ -19,6 +21,7 @@
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .chat-container {
@@ -69,7 +72,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
+            background: transparent; /* Make background transparent */
             padding: 20px;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
@@ -79,6 +82,8 @@
             margin: 0 auto;
             display: flex;
             gap: 10px;
+            align-items: center;
+            width: 100%;
         }
 
         input[type="text"] {
@@ -90,12 +95,11 @@
         }
 
         button {
-            padding: 15px 30px;
-            background-color: var(--primary-color);
-            color: white;
+            background: transparent; /* Make background transparent */
             border: none;
-            border-radius: 25px;
             cursor: pointer;
+            padding: 15px;
+            border-radius: 25px;
             transition: all 0.3s ease;
         }
 
@@ -103,9 +107,26 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        .dark-mode {
+            background-color: var(--dark-bg-color);
+            color: var(--dark-text-color);
+        }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     <div class="chat-container" id="chatContainer">
         <div class="message bot">
             <img src="bot-avatar.png" class="avatar" alt="Bot Avatar">
@@ -115,12 +136,22 @@
         </div>
     </div>
 
-    <div class="input-wrapper">
-        <input type="text" id="userInput" placeholder="Mesajınızı yazın...">
-        <button class="voice-button" id="voiceButton" onclick="startVoiceRecognition()">🎤</button>
+    <div class="input-container">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Mesajınızı yazın...">
+            <button class="voice-button" id="voiceButton" onclick="startVoiceRecognition()">
+                <img src="D:\Avimias\Mikrofon.png" alt="Mikrofon" style="width: 20px; height: 20px; opacity: 0.7;">
+            </button>
+            <button class="file-button" id="fileButton" onclick="document.getElementById('fileInput').click();">
+                <img src="D:\Avimias\list.png" alt="Dosya" style="width: 20px; height: 20px; opacity: 0.7;">
+                <input type="file" id="fileInput" style="display: none;" onchange="sendFile(event)">
+            </button>
+        </div>
     </div>
 
     <script>
+        const apiKey = "AIzaSyDsDQivLDfEzX1__G9xV93paFpkXj-vRaM"; // API key for chat functionality
+
         // Giriş durumu kontrolü
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = 'login.html';
@@ -140,6 +171,7 @@
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 document.getElementById('userInput').value = transcript;
+                sendMessage(); // Automatically send the message after recognition
             };
 
             recognition.onerror = function(event) {
@@ -157,6 +189,9 @@
 
             appendMessage(message, true);
             userInput.value = '';
+
+            // Here you can add logic to send the message to your chat API using the apiKey
+            // For example, you can use fetch to send the message to your backend
 
             setTimeout(() => {
                 const botResponse = "Üzgünüm, şu an yanıt veremiyorum."; // Dummy bot yanıtı
@@ -190,6 +225,19 @@
                 sendMessage();
             }
         });
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function sendFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const message = `Dosya yüklendi: ${file.name}`;
+                appendMessage(message, true);
+                // Here you can add logic to handle the file upload if needed
+            }
+        }
     </script>
 </body>
 </html>
